@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import SOrders, SQuantity_products, OrderStatus
 from app.shemas import OrderCreate
+from datetime import datetime
 
 RABBITMQ_URL = 'amqp://guest:guest@localhost:5672/'
 
@@ -16,19 +17,21 @@ async def create_order(order: OrderCreate, db: Session):
         shop=order.shop_id,
         product=order.product_id,
         quantity=order.quantity,
-        price=order.price
+        price=order.price,
+        date_created=datetime.now()
     )
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
 
     order_data = {
-        "order_id": new_order.order_id,  # Используйте new_order.id
+        "order_id": new_order.order_id,  # берем из базы primary key
         "buyer_id": new_order.buyer,
         "shop_id": new_order.shop,
         "product_id": new_order.product,
         "quantity": new_order.quantity,
-        "price": new_order.price
+        "price": new_order.price,
+        "date_created": new_order.date_created
     }
 
     connection = pika.BlockingConnection(pika.URLParameters(RABBITMQ_URL))
