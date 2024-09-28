@@ -1,7 +1,7 @@
 import enum
 
-from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, DateTime
-from app.database import Base
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from database import Base
 
 
 class SStatus(Base):

@@ -3,12 +3,12 @@
 import pika
 import json
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models import SOrders, SQuantity_products, OrderStatus
-from app.shemas import OrderCreate
+from database import get_db
+from models import SOrders, SQuantity_products, OrderStatus
+from shemas import OrderCreate
 from datetime import datetime
 
-RABBITMQ_URL = 'amqp://guest:guest@localhost:5672/'
+RABBITMQ_URL = 'amqp://guest:guest@rabbitmq:5672/'
 
 
 async def create_order(order: OrderCreate, db: Session):

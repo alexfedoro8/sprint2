@@ -1,0 +1,39 @@
+services:
+  # Сервис для FastAPI приложения
+  app:
+    build: .
+    container_name: fastapi_app
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db/sprint
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - db
+      - rabbitmq
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  # Сервис для PostgreSQL
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sprint
+    ports:
+      - "5432:5432"
+
+
+  # Сервис для RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Для доступа к веб-интерфейсу RabbitMQ
+
+volumes:
+  postgres_data:

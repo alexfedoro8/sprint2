@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.shemas import OrderCreate
-from app.order_processor import OrderProcessor, create_order
+from database import get_db
+from shemas import OrderCreate
+from order_processor import OrderProcessor, create_order
 import threading
 
 app = FastAPI()
